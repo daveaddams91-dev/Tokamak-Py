@@ -1,63 +1,32 @@
-Byte-compiled / optimized / DLL files
-
-pycache/
+# Byte-compiled / optimized / DLL files
+__pycache__/
 *.py[cod]
 *$py.class
+__pycache__/numba
 
-C extensions
-
-*.so
-
-Distribution / packaging
-
-.Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-share/python-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
-MANIFEST
-
-Virtual Environments
-
+# Virtual Environments
+.venv/
 venv/
 env/
 ENV/
-env.bak/
-venv.bak/
 
-IDEs and Editors
+# Testing & Caches
+.pytest_cache/
+.coverage
+htmlcov/
 
+# Distribution / Packaging
+build/
+dist/
+*.egg-info/
+*.egg
+
+# IDEs and Editors
 .vscode/
 .idea/
 *.swp
 *.swo
-*~
 
-macOS
-
+# OS files
 .DS_Store
-
-PyBuilder
-
-.pybuilder/
-target/
-
-Jupyter Notebook
-
-.ipynb_checkpoints
-
-Numba cache
-
-pycache/numba
+Thumbs.db
