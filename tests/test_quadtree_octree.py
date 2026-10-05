@@ -4,10 +4,8 @@ Tests for Barnes-Hut 2D Quadtree and 3D Octree modules.
 
 import pytest
 import numpy as np
-from tokamak_py.tree import (
-    get_bounding_box_2d, get_quadrant, build_quadtree,
-    get_bounding_box_3d, get_octant, build_octree
-)
+from tokamak_py.quadtree import get_bounding_box_2d, get_quadrant, build_quadtree
+from tokamak_py.octree import get_bounding_box_3d, get_octant, build_octree
 
 
 def test_bounding_box_2d():

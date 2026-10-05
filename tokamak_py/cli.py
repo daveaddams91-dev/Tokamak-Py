@@ -14,7 +14,7 @@ import numpy as np
 from .engine import PhysicsEngine
 from .presets import PRESETS, get_preset
 from .direct import calculate_direct_forces_2d
-from .tree import get_bounding_box_2d, build_quadtree, calculate_forces_2d
+from .quadtree import get_bounding_box_2d, build_quadtree, calculate_forces_2d
 
 
 def run_simulation(args):

@@ -14,10 +14,8 @@ from .constants import (
     DEFAULT_BOUNDARY_RADIUS, SPECIES_NORMALIZED_ION, SPECIES_NORMALIZED_ELECTRON
 )
 from .fields import FieldConfig, ZeroFieldConfig, Tokamak2DConfig
-from .tree import (
-    get_bounding_box_2d, build_quadtree, calculate_forces_2d,
-    get_bounding_box_3d, build_octree, calculate_forces_3d
-)
+from .quadtree import get_bounding_box_2d, build_quadtree, calculate_forces_2d
+from .octree import get_bounding_box_3d, build_octree, calculate_forces_3d
 from .direct import calculate_direct_forces_2d, calculate_direct_forces_3d
 from .integrators import (
     boris_step_2d, boris_step_3d,

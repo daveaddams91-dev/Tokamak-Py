@@ -7,7 +7,7 @@ Maintained for backward compatibility with existing scripts.
 
 import numpy as np
 from tokamak_py.engine import PhysicsEngine
-from tokamak_py.tree import (
+from tokamak_py.quadtree import (
     get_bounding_box_2d as get_bounding_box,
     get_quadrant,
     build_quadtree,

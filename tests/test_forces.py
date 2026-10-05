@@ -5,10 +5,8 @@ Tests for N-body force algorithms: Direct O(N^2) vs Barnes-Hut O(N log N).
 import pytest
 import numpy as np
 from tokamak_py.direct import calculate_direct_forces_2d, calculate_direct_forces_3d
-from tokamak_py.tree import (
-    get_bounding_box_2d, build_quadtree, calculate_forces_2d,
-    get_bounding_box_3d, build_octree, calculate_forces_3d
-)
+from tokamak_py.quadtree import get_bounding_box_2d, build_quadtree, calculate_forces_2d
+from tokamak_py.octree import get_bounding_box_3d, build_octree, calculate_forces_3d
 
 
 def test_forces_2d_accuracy():
