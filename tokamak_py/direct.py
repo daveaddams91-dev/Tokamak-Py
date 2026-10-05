@@ -5,12 +5,16 @@ Implements vectorized, parallel O(N^2) Coulomb force and potential energy
 summation using Numba JIT. Serves as ground-truth benchmark and high-precision
 solver for moderate particle numbers.
 """
+from __future__ import annotations
 
-import numpy as np
+
 from numba import njit, prange
+import numpy as np
+
+
 
 @njit(parallel=True, fastmath=True)
-def calculate_direct_forces_2d(positions, charges, k_e=1000.0, softening=1.0):
+def calculate_direct_forces_2d(positions, charges, k_e=1000.0, softening=1.0) -> tuple:
     """
     Computes exact pairwise Coulomb forces and potential energy in 2D.
     
@@ -55,7 +59,7 @@ def calculate_direct_forces_2d(positions, charges, k_e=1000.0, softening=1.0):
 
 
 @njit(parallel=True, fastmath=True)
-def calculate_direct_forces_3d(positions, charges, k_e=1000.0, softening=1.0):
+def calculate_direct_forces_3d(positions, charges, k_e=1000.0, softening=1.0) -> tuple:
     """
     Computes exact pairwise Coulomb forces and potential energy in 3D.
     """
