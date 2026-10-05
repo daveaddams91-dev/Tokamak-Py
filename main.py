@@ -5,14 +5,14 @@ Launches the real-time interactive PyQt6/PyQtGraph dashboard by default,
 or routes to the headless CLI runner when flags (--headless, --benchmark, run)
 are supplied or when running in a displayless environment.
 """
+from __future__ import annotations
+
 
 import sys
 import argparse
 
-from tokamak_py.engine import PhysicsEngine
-from tokamak_py.presets import PRESETS
 
-def run_gui(default_preset="tokamak_2d"):
+def run_gui(default_preset="tokamak_2d") -> int:
     """Launches the interactive PyQt6 dashboard."""
     try:
         from PyQt6.QtWidgets import QApplication
@@ -43,6 +43,12 @@ def run_gui(default_preset="tokamak_2d"):
 
 def main():
     # If explicit CLI subcommands or headless flags are passed, invoke CLI
+    """Entry point — parse arguments and run the main computation.
+    
+    Returns:
+        The computed result
+    
+    """
     cli_commands = {"run", "benchmark", "presets"}
     if len(sys.argv) > 1:
         first_arg = sys.argv[1].lower()
