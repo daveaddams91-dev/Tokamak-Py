@@ -6,6 +6,7 @@ for electrons, protons, deuterons, tritons, and alpha particles.
 """
 
 from dataclasses import dataclass
+
 import numpy as np
 
 # =============================================================================
@@ -27,6 +28,8 @@ COULOMB_CONSTANT = 1.0 / (4.0 * np.pi * VACUUM_PERMITTIVITY) # ~ 8.98755e9 N m^2
 # =============================================================================
 # Species Properties
 # =============================================================================
+
+
 @dataclass(frozen=True)
 class Species:
     name: str
