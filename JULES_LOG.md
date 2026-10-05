@@ -1,3 +1,5 @@
 
 ## Refactored tree.py into quadtree.py and octree.py
 Broke down the massive 440-line `tree.py` file which had high cyclomatic complexity by separating the 2D Barnes-Hut implementation (`quadtree.py`) and the 3D Barnes-Hut implementation (`octree.py`). This separation of concerns improves readability and maintainability. Updated all cross-references across `tests/`, `tokamak_py/`, and `physics.py`.
+
+Refactored `tokamak_py/gui.py` to break down the monolithic UI class into smaller, single-responsibility modules: `tokamak_py/gui_controls.py` for control inputs and `tokamak_py/gui_telemetry.py` for the pyqtgraph plots. This separation significantly improves code maintainability and testability of the GUI components without altering the underlying physics engine logic.
