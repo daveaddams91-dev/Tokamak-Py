@@ -8,16 +8,21 @@ Implements Numba-accelerated magnetic and electric field models:
 - Inertial Electrostatic Confinement (IEC Fusor)
 - Orthogonal E x B Drift Configuration
 """
+from __future__ import annotations
 
-import numpy as np
+
 from numba import njit
+import numpy as np
+
+
 
 # =============================================================================
 # Vectorized Numba Field Functions
 # =============================================================================
 
+
 @njit(fastmath=True)
-def eval_tokamak_field_3d(positions, B0=1.0, R0=100.0, a=40.0, B_theta0=0.2, Bz_eq=0.0):
+def eval_tokamak_field_3d(positions, B0=1.0, R0=100.0, a=40.0, B_theta0=0.2, Bz_eq=0.0) -> tuple:
     """
     Computes magnetic field for a Tokamak torus in 3D Cartesian coordinates (x, y, z).
     Torus center at origin (0, 0, 0), torus axis along Z.
@@ -96,7 +101,7 @@ def eval_tokamak_field_3d(positions, B0=1.0, R0=100.0, a=40.0, B_theta0=0.2, Bz_
 
 
 @njit(fastmath=True)
-def eval_tokamak_field_2d(positions, B0=1.0, R0=100.0, a=40.0, B_theta0=0.2):
+def eval_tokamak_field_2d(positions, B0=1.0, R0=100.0, a=40.0, B_theta0=0.2) -> tuple:
     """
     Computes 2D poloidal plane slice representation of Tokamak fields.
     Coordinates (x, y) represent (R - R0, Z).
@@ -142,7 +147,7 @@ def eval_tokamak_field_2d(positions, B0=1.0, R0=100.0, a=40.0, B_theta0=0.2):
 
 
 @njit(fastmath=True)
-def eval_magnetic_mirror_3d(positions, B0=1.0, L=80.0, Rm=3.0):
+def eval_magnetic_mirror_3d(positions, B0=1.0, L=80.0, Rm=3.0) -> tuple:
     """
     Computes magnetic field for a Magnetic Mirror (Bottle Trap) in 3D.
     Mirror coils located at z = +/- L.
@@ -180,7 +185,7 @@ def eval_magnetic_mirror_3d(positions, B0=1.0, L=80.0, Rm=3.0):
 
 
 @njit(fastmath=True)
-def eval_iec_fusor_field(positions, V0=2000.0, r_grid=30.0, softening=2.0):
+def eval_iec_fusor_field(positions, V0=2000.0, r_grid=30.0, softening=2.0) -> tuple:
     """
     Inertial Electrostatic Confinement (IEC Fusor) potential well.
     Central transparent spherical cathode grid creates deep negative potential well.
@@ -209,7 +214,7 @@ def eval_iec_fusor_field(positions, V0=2000.0, r_grid=30.0, softening=2.0):
 
 
 @njit(fastmath=True)
-def eval_exb_drift_field(positions, Ey=50.0, Bz=2.0):
+def eval_exb_drift_field(positions, Ey=50.0, Bz=2.0) -> tuple:
     """
     Uniform orthogonal E and B field configuration.
     Demonstrates pure E x B drift: v_d = (Ey / Bz) along x-axis.
@@ -229,13 +234,31 @@ def eval_exb_drift_field(positions, Ey=50.0, Bz=2.0):
 # Object-Oriented Configuration Wrappers
 # =============================================================================
 
+
 class FieldConfig:
     """Base class for electromagnetic field configurations."""
     def get_fields(self, positions):
+        """Retrieve fields.
+        
+        Args:
+            positions:
+        
+        """
         raise NotImplementedError
+
 
 class Tokamak3DConfig(FieldConfig):
     def __init__(self, B0=1.0, R0=100.0, a=40.0, B_theta0=0.2, Bz_eq=0.0):
+        """Init.
+        
+        Args:
+            B0 (float):
+            R0 (float):
+            a (float):
+            B_theta0 (float):
+            Bz_eq (float):
+        
+        """
         self.B0 = B0
         self.R0 = R0
         self.a = a
@@ -244,10 +267,29 @@ class Tokamak3DConfig(FieldConfig):
         self.name = "Tokamak Torus (3D)"
         
     def get_fields(self, positions):
+        """Retrieve fields.
+        
+        Args:
+            positions:
+        
+        Returns:
+            The computed result
+        
+        """
         return eval_tokamak_field_3d(positions, self.B0, self.R0, self.a, self.B_theta0, self.Bz_eq)
+
 
 class Tokamak2DConfig(FieldConfig):
     def __init__(self, B0=1.0, R0=100.0, a=50.0, B_theta0=0.2):
+        """Init.
+        
+        Args:
+            B0 (float):
+            R0 (float):
+            a (float):
+            B_theta0 (float):
+        
+        """
         self.B0 = B0
         self.R0 = R0
         self.a = a
@@ -255,41 +297,115 @@ class Tokamak2DConfig(FieldConfig):
         self.name = "Tokamak Poloidal Slice (2D)"
         
     def get_fields(self, positions):
+        """Retrieve fields.
+        
+        Args:
+            positions:
+        
+        Returns:
+            The computed result
+        
+        """
         return eval_tokamak_field_2d(positions, self.B0, self.R0, self.a, self.B_theta0)
+
 
 class MagneticMirrorConfig(FieldConfig):
     def __init__(self, B0=1.0, L=80.0, Rm=3.0):
+        """Init.
+        
+        Args:
+            B0 (float):
+            L (float):
+            Rm (float):
+        
+        """
         self.B0 = B0
         self.L = L
         self.Rm = Rm
         self.name = "Magnetic Mirror (Bottle Trap)"
         
     def get_fields(self, positions):
+        """Retrieve fields.
+        
+        Args:
+            positions:
+        
+        Returns:
+            The computed result
+        
+        """
         return eval_magnetic_mirror_3d(positions, self.B0, self.L, self.Rm)
+
 
 class IECFusorConfig(FieldConfig):
     def __init__(self, V0=2000.0, r_grid=30.0):
+        """Init.
+        
+        Args:
+            V0 (float):
+            r_grid (float):
+        
+        """
         self.V0 = V0
         self.r_grid = r_grid
         self.name = "Inertial Electrostatic Confinement (Fusor)"
         
     def get_fields(self, positions):
+        """Retrieve fields.
+        
+        Args:
+            positions:
+        
+        Returns:
+            The computed result
+        
+        """
         return eval_iec_fusor_field(positions, self.V0, self.r_grid)
+
 
 class ExBDriftConfig(FieldConfig):
     def __init__(self, Ey=50.0, Bz=2.0):
+        """Init.
+        
+        Args:
+            Ey (float):
+            Bz (float):
+        
+        """
         self.Ey = Ey
         self.Bz = Bz
         self.name = "E x B Drift Configuration"
         
     def get_fields(self, positions):
+        """Retrieve fields.
+        
+        Args:
+            positions:
+        
+        Returns:
+            The computed result
+        
+        """
         return eval_exb_drift_field(positions, self.Ey, self.Bz)
+
 
 class ZeroFieldConfig(FieldConfig):
     def __init__(self):
+        """Init.
+        
+        """
         self.name = "Self-Consistent Electrostatic (No External Field)"
         
-    def get_fields(self, positions):
+    def get_fields(self, positions) -> tuple:
+        """Retrieve fields.
+        
+        Args:
+            positions:
+        
+        Returns:
+            tuple: Result of type tuple
+        
+        """
         n = positions.shape[0]
         dim = positions.shape[1]
         return np.zeros((n, dim), dtype=np.float64), np.zeros((n, 3), dtype=np.float64)

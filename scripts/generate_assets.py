@@ -11,18 +11,18 @@ Computes and renders high-resolution plots for the README and documentation:
 
 import os
 import sys
-import numpy as np
-import matplotlib.pyplot as plt
-import matplotlib.patches as patches
+
 from matplotlib.gridspec import GridSpec
+from tokamak_py.engine import PhysicsEngine
+from tokamak_py.fields import eval_tokamak_field_3d, eval_tokamak_field_2d, eval_magnetic_mirror_3d
+from tokamak_py.integrators import boris_step_3d
+import matplotlib.patches as patches
+import matplotlib.pyplot as plt
+import numpy as np
 
 # Ensure tokamak_py is importable
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from tokamak_py.engine import PhysicsEngine
-from tokamak_py.fields import eval_tokamak_field_3d, eval_tokamak_field_2d, eval_magnetic_mirror_3d
-from tokamak_py.integrators import boris_step_3d
-from tokamak_py.presets import PRESETS
 
 # Configure matplotlib styling for sleek publication dark theme
 plt.rcParams.update({
@@ -340,7 +340,8 @@ def generate_presets_showcase():
     # Preset 1: Tokamak 2D
     ax1 = axes[0, 0]
     e1 = PhysicsEngine(preset="tokamak_2d", n_particles=400)
-    for _ in range(120): e1.step()
+    for _ in range(120):
+        e1.step()
     p1 = e1.positions; q1 = e1.charges
     ax1.scatter(p1[q1>0, 0], p1[q1>0, 1], c="#e74c3c", s=10, alpha=0.7, label="Ions (+)")
     ax1.scatter(p1[q1<0, 0], p1[q1<0, 1], c="#3498db", s=10, alpha=0.7, label="Electrons (-)")
@@ -353,7 +354,8 @@ def generate_presets_showcase():
     # Preset 2: Magnetic Mirror (3D projected to X-Z)
     ax2 = axes[0, 1]
     e2 = PhysicsEngine(preset="magnetic_mirror", n_particles=350)
-    for _ in range(120): e2.step()
+    for _ in range(120):
+        e2.step()
     p2 = e2.positions
     ax2.scatter(p2[:, 2], p2[:, 0], c="#f39c12", s=12, alpha=0.75, label="Mirror Ions")
     # Draw mirror coil throats
@@ -368,7 +370,8 @@ def generate_presets_showcase():
     # Preset 3: IEC Fusor
     ax3 = axes[1, 0]
     e3 = PhysicsEngine(preset="fusor", n_particles=450)
-    for _ in range(120): e3.step()
+    for _ in range(120):
+        e3.step()
     p3 = e3.positions
     ax3.scatter(p3[:, 0], p3[:, 1], c="#e74c3c", s=10, alpha=0.7, label="Recirculating Ions")
     # Inner cathode grid
@@ -382,7 +385,8 @@ def generate_presets_showcase():
     # Preset 4: E x B Drift
     ax4 = axes[1, 1]
     e4 = PhysicsEngine(preset="exb_drift", n_particles=300)
-    for _ in range(120): e4.step()
+    for _ in range(120):
+        e4.step()
     p4 = e4.positions; q4 = e4.charges
     ax4.scatter(p4[q4>0, 0], p4[q4>0, 1], c="#e74c3c", s=10, alpha=0.7, label="Positive Ions")
     ax4.scatter(p4[q4<0, 0], p4[q4<0, 1], c="#3498db", s=10, alpha=0.7, label="Negative Electrons")
@@ -401,6 +405,9 @@ def generate_presets_showcase():
 
 
 def main():
+    """Entry point — parse arguments and run the main computation.
+    
+    """
     print("=== Generating All Scientific Visual Assets for Tokamak-Py ===")
     generate_banner()
     generate_tokamak_confinement()

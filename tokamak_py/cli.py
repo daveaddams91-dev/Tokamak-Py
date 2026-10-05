@@ -5,7 +5,6 @@ Provides headless execution, automated benchmarking, diagnostic plotting,
 and asset generation without requiring a GUI display server.
 """
 
-import sys
 import os
 import time
 import argparse
@@ -222,6 +221,9 @@ def list_presets():
 
 
 def main():
+    """Entry point — parse arguments and run the main computation.
+    
+    """
     parser = argparse.ArgumentParser(description="Tokamak-Py: Plasma Physics & Confinement Engine CLI")
     subparsers = parser.add_subparsers(dest="command", help="Sub-commands")
 
