@@ -20,7 +20,6 @@ from PyQt6.QtWidgets import (
     QDoubleSpinBox, QCheckBox, QFrame, QGroupBox, QSplitter
 )
 from PyQt6.QtCore import Qt, QTimer
-from PyQt6.QtGui import QFont, QColor
 
 from .engine import PhysicsEngine
 from .presets import PRESETS, get_preset, SimulationPreset
@@ -30,6 +29,12 @@ class PlasmaSimulationApp(QMainWindow):
     """Interactive GUI application for Tokamak-Py."""
 
     def __init__(self, default_preset: str = "tokamak_2d"):
+        """Init.
+        
+        Args:
+            default_preset (str):
+        
+        """
         super().__init__()
         self.setWindowTitle("Tokamak-Py: Advanced Plasma Confinement Engine")
         self.resize(1500, 920)
@@ -310,6 +315,9 @@ class PlasmaSimulationApp(QMainWindow):
         self.boundary_item.setData(bx, by)
 
     def toggle_play_pause(self):
+        """Toggle play pause.
+        
+        """
         self.is_running = not self.is_running
         if self.is_running:
             self.btn_play.setText("Pause")
@@ -319,11 +327,17 @@ class PlasmaSimulationApp(QMainWindow):
             self.btn_play.setStyleSheet("background-color: #7d4e1a; border-color: #e67e22; color: white;")
 
     def single_step(self):
+        """Single step.
+        
+        """
         for _ in range(self.substeps_per_frame):
             self.engine.step()
         self.refresh_display()
 
     def reset_simulation(self):
+        """Reset simulation.
+        
+        """
         self.engine.reset()
         self.ke_history.clear()
         self.pe_history.clear()
@@ -336,6 +350,12 @@ class PlasmaSimulationApp(QMainWindow):
         self._update_boundary_display()
 
     def on_preset_changed(self, index):
+        """On preset changed.
+        
+        Args:
+            index:
+        
+        """
         key = self.combo_preset.itemData(index)
         self.preset_name = key
         self.engine = PhysicsEngine(preset=key)
@@ -345,20 +365,41 @@ class PlasmaSimulationApp(QMainWindow):
         self.reset_simulation()
 
     def on_particle_count_changed(self, val):
+        """On particle count changed.
+        
+        Args:
+            val:
+        
+        """
         self.engine.n_particles = val
         self.reset_simulation()
 
     def on_b_field_changed(self, val):
+        """On b field changed.
+        
+        Args:
+            val:
+        
+        """
         scale = val / 100.0
         self.engine.b_field_scale = scale
         self.lbl_b_val.setText(f"{scale:.1f}x")
 
     def on_dt_changed(self, val):
+        """On dt changed.
+        
+        Args:
+            val:
+        
+        """
         dt = val / 10000.0
         self.engine.dt = dt
         self.lbl_dt_val.setText(f"{dt:.4f}")
 
     def update_simulation(self):
+        """Update simulation.
+        
+        """
         if not self.is_running:
             return
 
@@ -370,6 +411,9 @@ class PlasmaSimulationApp(QMainWindow):
 
     def refresh_display(self):
         # 1. Update Sandbox Scatter Plot
+        """Refresh display.
+        
+        """
         pos = self.engine.positions
         charges = self.engine.charges
         
@@ -402,7 +446,7 @@ class PlasmaSimulationApp(QMainWindow):
 
         # 4. Update Maxwell-Boltzmann Speed Distribution
         speeds = self.engine.get_speed_distribution()
-        if len(speeds) > 0 and self.frame_count % 3 == 0:
+        if bool(speeds) and self.frame_count % 3 == 0:
             hist, bin_edges = np.histogram(speeds, bins=25, density=True)
             self.hist_curve.setData(bin_edges, hist)
 
@@ -421,6 +465,9 @@ class PlasmaSimulationApp(QMainWindow):
 
 
 def main():
+    """Entry point — parse arguments and run the main computation.
+    
+    """
     app = pg.mkQApp("Tokamak-Py Dashboard")
     window = PlasmaSimulationApp()
     window.show()
