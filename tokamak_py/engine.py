@@ -51,6 +51,23 @@ class PhysicsEngine:
         species_mode: Optional[str] = None
     ):
         # Handle preset configuration if passed
+        """Init.
+        
+        Args:
+            n_particles:
+            dt:
+            theta:
+            softening:
+            boundary_radius:
+            k_e:
+            dimension:
+            field_config:
+            solver (str):
+            preset:
+            initial_thermal_speed:
+            species_mode:
+        
+        """
         self.preset_obj: Optional[SimulationPreset] = None
         if preset is not None:
             if isinstance(preset, str):
