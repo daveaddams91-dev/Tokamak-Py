@@ -13,7 +13,7 @@ import numpy as np
 
 
 
-@njit(parallel=True, fastmath=True)
+@njit(cache=True, parallel=True, fastmath=True)
 def calculate_direct_forces_2d(positions, charges, k_e=1000.0, softening=1.0) -> tuple:
     """
     Computes exact pairwise Coulomb forces and potential energy in 2D.
@@ -58,7 +58,7 @@ def calculate_direct_forces_2d(positions, charges, k_e=1000.0, softening=1.0) ->
     return forces, np.sum(pe_arr)
 
 
-@njit(parallel=True, fastmath=True)
+@njit(cache=True, parallel=True, fastmath=True)
 def calculate_direct_forces_3d(positions, charges, k_e=1000.0, softening=1.0) -> tuple:
     """
     Computes exact pairwise Coulomb forces and potential energy in 3D.

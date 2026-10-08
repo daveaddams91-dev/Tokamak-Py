@@ -6,7 +6,7 @@ Handles $O(N \\log N)$ spatial partitioning and force calculation in 3D.
 import numpy as np
 from numba import njit, prange
 
-@njit(fastmath=True)
+@njit(cache=True, fastmath=True)
 def get_bounding_box_3d(positions):
     """Calculates the bounding cube for 3D particles."""
     min_x = np.min(positions[:, 0]); max_x = np.max(positions[:, 0])
@@ -20,7 +20,7 @@ def get_bounding_box_3d(positions):
     size = max(max_x - min_x, max(max_y - min_y, max_z - min_z)) + 1e-4
     return cx, cy, cz, size
 
-@njit(fastmath=True)
+@njit(cache=True, fastmath=True)
 def get_octant(x, y, z, cx, cy, cz):
     """Determines octant (0 to 7) for 3D Barnes-Hut octree."""
     idx = 0
@@ -29,7 +29,7 @@ def get_octant(x, y, z, cx, cy, cz):
     if z >= cz: idx |= 4
     return idx
 
-@njit
+@njit(cache=True)
 def build_octree(positions, charges, root_cx, root_cy, root_cz, root_size):
     """
     Builds array-based Barnes-Hut Octree for 3D charges.
@@ -147,7 +147,7 @@ def build_octree(positions, charges, root_cx, root_cy, root_cz, root_size):
 
     return node_f, node_i, node_count
 
-@njit(parallel=True, fastmath=True)
+@njit(cache=True, parallel=True, fastmath=True)
 def calculate_forces_3d(positions, charges, node_f, node_i, k_e=1000.0, softening=1.0, theta=0.25):
     """Calculates Coulomb forces and Potential Energy in 3D using Barnes-Hut octree."""
     n_particles = len(positions)

@@ -15,7 +15,7 @@ from numba import njit, prange
 # Symplectic Boris Integrator
 # =============================================================================
 
-@njit(parallel=True, fastmath=True)
+@njit(cache=True, parallel=True, fastmath=True)
 def boris_step_3d(positions, velocities, masses, charges, total_forces, B_fields, dt):
     """
     Executes one step of the Boris algorithm in 3D space with 3D velocities (3D-3V).
@@ -74,7 +74,7 @@ def boris_step_3d(positions, velocities, masses, charges, total_forces, B_fields
         positions[i, 2] += vz_new * dt
 
 
-@njit(parallel=True, fastmath=True)
+@njit(cache=True, parallel=True, fastmath=True)
 def boris_step_2d(positions, velocities_3d, masses, charges, total_forces_2d, B_fields_3d, dt):
     """
     Executes Boris algorithm in 2D space with 3D velocities (2D-3V).
@@ -130,7 +130,7 @@ def boris_step_2d(positions, velocities_3d, masses, charges, total_forces_2d, B_
 # Kinematic Boundary Limiters
 # =============================================================================
 
-@njit(fastmath=True)
+@njit(cache=True, fastmath=True)
 def apply_boundary_circular_2d(positions, velocities, boundary_radius):
     """Elastic reflective circular boundary in 2D."""
     n = positions.shape[0]
@@ -152,7 +152,7 @@ def apply_boundary_circular_2d(positions, velocities, boundary_radius):
                 velocities[i, 1] -= 2.0 * dot_prod * ny
 
 
-@njit(fastmath=True)
+@njit(cache=True, fastmath=True)
 def apply_boundary_tokamak_3d(positions, velocities, R0=100.0, a=40.0):
     """
     Toroidal vessel boundary / limiter for Tokamak in 3D.
@@ -195,7 +195,7 @@ def apply_boundary_tokamak_3d(positions, velocities, R0=100.0, a=40.0):
                 velocities[i, 2] -= 2.0 * dot_prod * nz
 
 
-@njit(fastmath=True)
+@njit(cache=True, fastmath=True)
 def apply_boundary_spherical_3d(positions, velocities, radius):
     """Elastic reflective spherical boundary in 3D."""
     n = positions.shape[0]
