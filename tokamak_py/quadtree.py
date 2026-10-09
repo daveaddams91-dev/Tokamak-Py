@@ -6,7 +6,7 @@ Handles $O(N \\log N)$ spatial partitioning and force calculation.
 import numpy as np
 from numba import njit, prange
 
-@njit(fastmath=True)
+@njit(cache=True, fastmath=True)
 def get_bounding_box_2d(positions):
     """Calculates the bounding square for 2D particles."""
     min_x = np.min(positions[:, 0])
@@ -23,7 +23,7 @@ def get_bounding_box_2d(positions):
 
     return cx, cy, size
 
-@njit(fastmath=True)
+@njit(cache=True, fastmath=True)
 def get_quadrant(x, y, cx, cy):
     """Returns quadrant index (0: SW, 1: NW, 2: SE, 3: NE)."""
     if x < cx:
@@ -31,7 +31,7 @@ def get_quadrant(x, y, cx, cy):
     else:
         return 2 if y < cy else 3
 
-@njit
+@njit(cache=True)
 def build_quadtree(positions, charges, root_cx, root_cy, root_size):
     """
     Builds array-based Barnes-Hut Quadtree for 2D charges.
@@ -136,7 +136,7 @@ def build_quadtree(positions, charges, root_cx, root_cy, root_size):
 
     return node_f, node_i, node_count
 
-@njit(parallel=True, fastmath=True)
+@njit(cache=True, parallel=True, fastmath=True)
 def calculate_forces_2d(positions, charges, node_f, node_i, k_e=1000.0, softening=1.0, theta=0.25):
     """Calculates Coulomb forces and Potential Energy in 2D using Barnes-Hut quadtree."""
     n_particles = len(positions)

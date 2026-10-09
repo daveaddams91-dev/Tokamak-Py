@@ -21,7 +21,7 @@ import numpy as np
 # =============================================================================
 
 
-@njit(fastmath=True)
+@njit(cache=True, fastmath=True)
 def eval_tokamak_field_3d(positions, B0=1.0, R0=100.0, a=40.0, B_theta0=0.2, Bz_eq=0.0) -> tuple:
     """
     Computes magnetic field for a Tokamak torus in 3D Cartesian coordinates (x, y, z).
@@ -100,7 +100,7 @@ def eval_tokamak_field_3d(positions, B0=1.0, R0=100.0, a=40.0, B_theta0=0.2, Bz_
     return E_field, B_field
 
 
-@njit(fastmath=True)
+@njit(cache=True, fastmath=True)
 def eval_tokamak_field_2d(positions, B0=1.0, R0=100.0, a=40.0, B_theta0=0.2) -> tuple:
     """
     Computes 2D poloidal plane slice representation of Tokamak fields.
@@ -146,7 +146,7 @@ def eval_tokamak_field_2d(positions, B0=1.0, R0=100.0, a=40.0, B_theta0=0.2) -> 
     return E_field, B_field
 
 
-@njit(fastmath=True)
+@njit(cache=True, fastmath=True)
 def eval_magnetic_mirror_3d(positions, B0=1.0, L=80.0, Rm=3.0) -> tuple:
     """
     Computes magnetic field for a Magnetic Mirror (Bottle Trap) in 3D.
@@ -184,7 +184,7 @@ def eval_magnetic_mirror_3d(positions, B0=1.0, L=80.0, Rm=3.0) -> tuple:
     return E_field, B_field
 
 
-@njit(fastmath=True)
+@njit(cache=True, fastmath=True)
 def eval_iec_fusor_field(positions, V0=2000.0, r_grid=30.0, softening=2.0) -> tuple:
     """
     Inertial Electrostatic Confinement (IEC Fusor) potential well.
@@ -213,7 +213,7 @@ def eval_iec_fusor_field(positions, V0=2000.0, r_grid=30.0, softening=2.0) -> tu
     return E_field, B_field
 
 
-@njit(fastmath=True)
+@njit(cache=True, fastmath=True)
 def eval_exb_drift_field(positions, Ey=50.0, Bz=2.0) -> tuple:
     """
     Uniform orthogonal E and B field configuration.
